@@ -1,0 +1,12 @@
+{
+    "news_api_key": "e42fe60714134724ad1ddba4acf8e7df",
+    "country": "us",
+    "category": "general",
+    "max_headlines_per_source": 3,
+    "chrome_driver_path": "C:\\Users\\adamn\\Downloads\\chromedriver-win64\\chromedriver-win64\\chromedriver.exe",
+    "remote_debugger_address": "127.0.0.1:9222",
+    "contacts": ["Sharan"],
+    "whatsapp_url": "https://web.whatsapp.com",
+    "logging_file": "news_agent.log"
+  }
+  
