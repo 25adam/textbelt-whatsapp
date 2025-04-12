@@ -70,9 +70,6 @@ def fetch_news():
         return []
 
 def group_articles_by_source(articles, max_per_source=3):
-    """
-    Groups articles by their source name and limits each source to a maximum number of headlines.
-    """
     grouped = {}
     for article in articles:
         source = article.get("source", {}).get("name", "Unknown Source")
@@ -86,10 +83,6 @@ def group_articles_by_source(articles, max_per_source=3):
     return grouped
 
 def analyze_sentiment(text):
-    """
-    Analyzes the overall sentiment of the text using VADER.
-    Returns "Overall Positive", "Overall Negative", or "Neutral".
-    """
     sid = SentimentIntensityAnalyzer()
     scores = sid.polarity_scores(text)
     compound = scores.get("compound", 0)
@@ -101,9 +94,6 @@ def analyze_sentiment(text):
         return "Neutral"
 
 def fetch_inspirational_quote():
-    """
-    Fetches a random inspirational quote from ZenQuotes API.
-    """
     try:
         response = requests.get("https://zenquotes.io/api/random")
         if response.status_code == 200:
@@ -119,9 +109,6 @@ def fetch_inspirational_quote():
         return ""
 
 def fetch_soccer_matches(league_id):
-    """
-    Fetches upcoming soccer matches from TheSportsDB API for the given league id.
-    """
     logging.info(f"Fetching soccer matches for league id: {league_id}")
     url = f"https://www.thesportsdb.com/api/v1/json/1/eventsnextleague.php?id={league_id}"
     try:
@@ -139,10 +126,7 @@ def fetch_soccer_matches(league_id):
         return []
 
 def create_formatted_soccer_matches_message(events):
-    """
-    Builds a formatted soccer matches section.
-    If no events are found, returns a default message.
-    """
+    
     if not events:
         return "Upcoming Soccer Matches:\n* No upcoming soccer matches."
     lines = ["Upcoming Soccer Matches:"]
@@ -155,20 +139,7 @@ def create_formatted_soccer_matches_message(events):
     return "\n".join(lines)
 
 def create_formatted_message_from_grouping(grouped_articles, sentiment, quote, soccer_section=""):
-    """
-    Builds a formatted message:
     
-    Daily News Summary
-    
-    [News grouped by source...]
-    
-    [Soccer matches section, if provided]
-    
-    Overall Sentiment: <sentiment>
-    Inspirational Quote: <quote>
-    
-    Have a great day!
-    """
     lines = ["Daily News Summary", ""]
     for source, headlines in grouped_articles.items():
         lines.append(f"{source}:")
@@ -248,13 +219,7 @@ def job():
     # Fetch an inspirational quote
     quote = fetch_inspirational_quote()
     
-    # Fetch soccer matches if a league ID is provided
-    soccer_section = ""
-    if SOCCER_LEAGUE_ID:
-        events = fetch_soccer_matches(SOCCER_LEAGUE_ID)
-        soccer_section = create_formatted_soccer_matches_message(events)
-    
-    formatted_message = create_formatted_message_from_grouping(grouped_articles, sentiment, quote, soccer_section)
+    formatted_message = create_formatted_message_from_grouping(grouped_articles, sentiment, quote)
     logging.info("Formatted message:\n" + formatted_message)
     
     for contact in CONTACTS:
